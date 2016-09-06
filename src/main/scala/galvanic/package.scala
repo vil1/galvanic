@@ -54,14 +54,27 @@ package object galvanic {
     override val size = 65536
   }
 
-  final class GalvanizedFunction[Domain : SmallDomain, Codomain](codomain: Array[Codomain])
+  trait CodomainRepresentation[C] {
+
+    type Repr
+
+    def store(value: C, index: Int, repr: Repr): Unit
+    def get(index: Int, repr: Repr): C
+    def init(size: Int)(implicit ct: ClassTag[C]): Repr
+
+  }
+
+  type CodReprAux[C, R] = CodomainRepresentation[C]{type Repr = R}
+
+  final class GalvanizedFunction[Domain : SmallDomain, Codomain, R](codomain: R)(implicit representation: CodReprAux[Codomain, R])
     extends (Domain => Codomain) {
 
     val domain = implicitly[SmallDomain[Domain]]
 
-    @inline override def apply(argument: Domain) = codomain(domain.asIndex(argument))
+    @inline override def apply(argument: Domain) = representation.get(domain.asIndex(argument), codomain)
 
   }
+
 
   /**
     * "Galvanize" a function by pre-computing its whole codomain and storing it as an array.
@@ -74,10 +87,12 @@ package object galvanic {
     * @tparam C the codomain (result type) of the function
     * @return the galvanized function
     */
-  def galvanize[D: SmallDomain, C: ClassTag](function: D => C): GalvanizedFunction[D, C] = {
+  def galvanize[D: SmallDomain, C: ClassTag](function: D => C)
+    (implicit repr: CodomainRepresentation[C] = mode.default.defaultCodomainRepresentation[C])
+  : GalvanizedFunction[D, C, repr.Repr] = {
     val domain = implicitly[SmallDomain[D]]
-    val codomain = new Array[C](domain.size)
-    (0 until domain.size) foreach (i => codomain.update(i ,function(domain.fromIndex(i))))
-    new GalvanizedFunction[D, C](codomain)
+    val codomain = repr.init(domain.size)
+    (0 until domain.size) foreach (i => repr.store(function(domain.fromIndex(i)), i, codomain))
+    new GalvanizedFunction[D, C, repr.Repr](codomain)(domain, repr)
   }
 }
