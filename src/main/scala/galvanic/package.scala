@@ -87,7 +87,7 @@ package object galvanic {
     * @tparam C the codomain (result type) of the function
     * @return the galvanized function
     */
-  def galvanize[D: SmallDomain, C: ClassTag](function: D => C)
+  def zn[D: SmallDomain, C: ClassTag](function: D => C)
     (implicit repr: CodomainRepresentation[C] = mode.default.defaultCodomainRepresentation[C])
   : GalvanizedFunction[D, C, repr.Repr] = {
     val domain = implicitly[SmallDomain[D]]

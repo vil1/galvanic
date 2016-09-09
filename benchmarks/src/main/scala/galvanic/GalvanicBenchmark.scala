@@ -11,15 +11,15 @@ import org.openjdk.jmh.annotations._
   */
 @State(Scope.Benchmark)
 @BenchmarkMode(Array(Mode.AverageTime))
-@OutputTimeUnit(TimeUnit.NANOSECONDS)
+@OutputTimeUnit(TimeUnit.MICROSECONDS)
 class GalvanicBenchmark {
 
   import galvanic._
 
   val allBytesRange: Seq[Byte] = (Byte.MinValue to Byte.MaxValue).map(_.toByte)
   val allShortsRange: Seq[Short] = (Short.MinValue to Short.MaxValue).map(_.toShort)
-  val logGalvanized = galvanize[Byte, Double](Math.log(_))
-  val fizzbuzzGalvanized = galvanize(fizzbuzz)
+  val logGalvanized = zn[Byte, Double](Math.log(_))
+  val fizzbuzzGalvanized = zn(fizzbuzz)
 
   def fizzbuzz(in: Short): String = in match {
     case i if i % 3 == 0 && i % 5 == 0  => "fizzbuzz"

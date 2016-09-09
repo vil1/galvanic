@@ -36,10 +36,10 @@ class CompactionBenchmark {
 
   val compactIsPrime = {
     import mode.compact._
-    galvanize(isPrime)
+    zn(isPrime)
   }
 
-  val normalIsPrime = galvanize(isPrime)
+  val normalIsPrime = zn(isPrime)
 
   val allShorts = (Short.MinValue to Short.MaxValue).map(_.toShort)
 
