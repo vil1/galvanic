@@ -1,11 +1,11 @@
 # Galvanic
 
-**galvanize** /ˈɡalvənʌɪz/ *verb*
-
-1.
-  1. to subject to the action of an electric current especially for the purpose of stimulating physiologically <galvanize a muscle>
-  2. to stimulate or excite as if by an electric shock <an issue that would galvanize public opinion>
-2. to coat (iron or steel) with zinc; especially :  to immerse in molten zinc to produce a coating of zinc-iron alloy
+> **galvanize** /ˈɡalvənʌɪz/ *verb*
+>
+> 1.  
+>   1. to subject to the action of an electric current especially for the purpose of stimulating physiologically <galvanize a muscle>
+>   2. to stimulate or excite as if by an electric shock <an issue that would galvanize public opinion>
+> 2. to coat (iron or steel) with zinc; especially :  to immerse in molten zinc to produce a coating of zinc-iron alloy
 
 
 Galvanic aims to make (part of) your code more performant (and in a sense closer to bare metal, hence the name) by simply wrapping it in the `zn` function.
